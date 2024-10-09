@@ -1,41 +1,22 @@
 import 'package:flutter/material.dart';
+import '../services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';  // Import geocoding package
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'GPS Location Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'GPS Location Tracker'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   double? _latitude;
   double? _longitude;
-  String? _cityName;  // Variable to store city name
+  String? _cityName;
   bool _isLoading = false;
+  final LocationService _locationService = LocationService();
 
   @override
   void initState() {
@@ -49,12 +30,12 @@ class _MyHomePageState extends State<MyHomePage> {
       _isLoading = true;
     });
 
-    Position? position = await _determinePosition();
+    Position? position = await _locationService.determinePosition();
     if (position != null) {
       setState(() {
         _latitude = position.latitude;
         _longitude = position.longitude;
-        _getCityName(_latitude!, _longitude!);  // Get city name from lat and long
+        _getCityName(_latitude!, _longitude!);
       });
     } else {
       setState(() {
@@ -66,41 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Reverse geocoding to get the city name from lat and long
   Future<void> _getCityName(double latitude, double longitude) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
-      Placemark place = placemarks[0];
-
-      setState(() {
-        _cityName = place.locality;  // Get the city name
-        _isLoading = false;
-      });
-    } catch (e) {
-      print("Error retrieving city name: $e");
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<Position?> _determinePosition() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return null;
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return null;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return null;
-    }
-
-    return await Geolocator.getCurrentPosition();
+    String? cityName = await _locationService.getCityName(latitude, longitude);
+    setState(() {
+      _cityName = cityName;
+      _isLoading = false;
+    });
   }
 
   @override
@@ -192,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,  // Ensures button text color is white
+                foregroundColor: Colors.white,
               ),
             )
           ],
