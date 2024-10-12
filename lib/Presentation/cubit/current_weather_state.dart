@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:weather_pro/Model/current_weather.dart';
+
+import '../../Model/current_weather.dart';
 
 @immutable
 abstract class CurrentWeatherState{}
@@ -23,6 +24,5 @@ class CurrentWeatherError extends CurrentWeatherState {
   final String message;
 
   CurrentWeatherError({required this.message});
-
 
 }

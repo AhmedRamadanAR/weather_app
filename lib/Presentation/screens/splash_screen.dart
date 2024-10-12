@@ -1,13 +1,15 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_pro/Presentation/screens/home_screen.dart';
 
-import 'package:weather_pro/presentation/screens/weather_home_screen.dart';
+
 
 
 
 class SplashScreen extends StatefulWidget {
+  SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -31,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) =>
 
-            HomePage() ),
+            HomeScreen() ),
       );
     });
   }

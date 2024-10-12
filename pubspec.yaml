@@ -3,7 +3,7 @@ description: A weather app with a loading screen splash page.
 
 # Flutter version setup (ensure your Flutter version is compatible)
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.3.4 <4.0.0'
 
 dependencies:
   provider:
@@ -19,7 +19,6 @@ dependencies:
 dev_dependencies:
   json_serializable: ^6.8.0
   build_runner: ^2.4.13
-  flutter_bloc: ^8.1.6
 
   flutter_test:
     sdk: flutter
