@@ -12,6 +12,10 @@ dependencies:
     sdk: flutter
   json_annotation: ^4.9.0
   flutter_bloc: ^8.1.6
+  permission_handler: ^11.1.0
+  geolocator: ^13.0.1
+  geocoding: ^3.0.0
+
 
   # Add any additional packages you may need later
   # e.g., for HTTP requests or state management.

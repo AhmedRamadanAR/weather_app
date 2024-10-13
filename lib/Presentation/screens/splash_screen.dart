@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:weather_pro/Presentation/screens/home_screen.dart';
+import 'package:weather_pro/Presentation/screens/location_screen.dart';
 
 
 
@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) =>
 
-            HomeScreen() ),
+            LocationScreen() ),
       );
     });
   }
