@@ -7,7 +7,11 @@ environment:
 
 dependencies:
   provider:
+  lottie: ^1.2.1
+
+
   dio: ^5.7.0
+  intl: ^0.17.0
   flutter:
     sdk: flutter
   json_annotation: ^4.9.0
@@ -40,7 +44,9 @@ flutter:
 
   # Declare your assets, like images, here
   assets:
-    - assets/logo.png  # Replace this with your actual logo file
+    - assets/images/
+    - assets/anims/
+  # Replace this with your actual logo file
 
   # You can add more assets like backgrounds or additional icons
   # e.g. - assets/splash_background.png
