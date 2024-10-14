@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'current_weather.g.dart';
 
+
 @JsonSerializable()
 class CurrentWeather {
   Coord? coord;
@@ -64,8 +65,8 @@ class Weather {
 class Main {
   double? temp;
   double? feelsLike;
-  double? tempMin;
-  double? tempMax;
+  double? temp_min;
+  double? temp_max;
   int? pressure;
   int? humidity;
   int? seaLevel;
@@ -74,8 +75,8 @@ class Main {
   Main(
       {this.temp,
       this.feelsLike,
-      this.tempMin,
-      this.tempMax,
+      this.temp_min,
+      this.temp_max,
       this.pressure,
       this.humidity,
       this.seaLevel,

@@ -32,6 +32,7 @@ class WeatherRepository{
 }
 
 LocationModel getLocation() {
+    print("lat :"+ localStorage.getLocation().lat.toString()+"long"+ localStorage.getLocation().lon.toString());
   return   localStorage.getLocation();
 }
 void updatLocation(LocationModel locationModel){

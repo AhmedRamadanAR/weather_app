@@ -12,6 +12,7 @@ void changeLocationScreenState () async{
 }
   @override
   void addLocation(LocationModel locationModel)async {
+
     await _locationBox.add( locationModel);
   }
 
@@ -22,6 +23,9 @@ void changeLocationScreenState () async{
 
   @override
   LocationModel getLocation() {
+  print("here");
+  print(_locationBox.values.first.lat);
+  print(_locationBox.values.first.lon);
     return  _locationBox.values.first;
 
   }

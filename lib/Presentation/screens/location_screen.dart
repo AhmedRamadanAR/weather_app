@@ -47,7 +47,7 @@ var repo = WeatherRepository(localStorage:DatabaseService(),apiService: WeatherA
         _latitude = position.latitude;
         _longitude = position.longitude;
       var getCityName=  await _getCityName(_latitude!, _longitude!);
-        repo.addLocation(LocationModel(lat: _latitude, lon: _longitude, cityName: getCityName,unit: WeatherUnit.imperial.name));
+        repo.addLocation(LocationModel(lat: _latitude, lon: _longitude, cityName: getCityName,unit: WeatherUnit.metric.name));
 
       });
     } else {

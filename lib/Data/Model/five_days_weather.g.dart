@@ -110,8 +110,8 @@ Map<String, dynamic> _$CloudsToJson(Clouds instance) => <String, dynamic>{
 MainClass _$MainClassFromJson(Map<String, dynamic> json) => MainClass(
       temp: (json['temp'] as num?)?.toDouble(),
       feelsLike: (json['feelsLike'] as num?)?.toDouble(),
-      tempMin: (json['tempMin'] as num?)?.toDouble(),
-      tempMax: (json['tempMax'] as num?)?.toDouble(),
+      temp_min: (json['temp_min'] as num?)?.toDouble(),
+      temp_max: (json['temp_max'] as num?)?.toDouble(),
       pressure: (json['pressure'] as num?)?.toInt(),
       seaLevel: (json['seaLevel'] as num?)?.toInt(),
       grndLevel: (json['grndLevel'] as num?)?.toInt(),
@@ -122,8 +122,8 @@ MainClass _$MainClassFromJson(Map<String, dynamic> json) => MainClass(
 Map<String, dynamic> _$MainClassToJson(MainClass instance) => <String, dynamic>{
       'temp': instance.temp,
       'feelsLike': instance.feelsLike,
-      'tempMin': instance.tempMin,
-      'tempMax': instance.tempMax,
+      'temp_min': instance.temp_min,
+      'temp_max': instance.temp_max,
       'pressure': instance.pressure,
       'seaLevel': instance.seaLevel,
       'grndLevel': instance.grndLevel,
