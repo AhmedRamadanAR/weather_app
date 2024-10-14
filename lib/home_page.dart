@@ -5,10 +5,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('WeatherPro Home'),
+        title: const Text('WeatherPro Home'),
         backgroundColor: Colors.deepPurple,
       ),
-      body: Center(
+      body: const Center(
         child: Text('Welcome to WeatherPro App!'), // Placeholder home page
       ),
     );

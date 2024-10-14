@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) =>  OnboardingView()),
+          MaterialPageRoute(builder: (context) =>  const OnboardingView()),
         );
       }
     });
@@ -55,14 +55,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(75),  // Half of the size for full rounding
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image: AssetImage('assets/logo.png'),  // Your logo path
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              SizedBox(height: 20),  // Space between logo and app name
-              Text(
+              const SizedBox(height: 20),  // Space between logo and app name
+              const Text(
                 'WeatherPro',  // App name or tagline
                 style: TextStyle(
                   fontSize: 36,

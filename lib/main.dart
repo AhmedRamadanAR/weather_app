@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_pro/Onboboarding/onboarding_view.dart';
-import 'package:weather_pro/home_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'splash_screen.dart'; // Import the splash screen file
 
 void main() async {
