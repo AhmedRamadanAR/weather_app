@@ -1,28 +1,33 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../Model/current_weather.dart';
+import '../../Data/Model/current_weather.dart';
+import '../../Data/Model/five_days_weather.dart';
+
 
 @immutable
-abstract class CurrentWeatherState{}
-class CurrentWeatherInitial extends CurrentWeatherState {
-
-}
-
-class CurrentWeatherLoading extends CurrentWeatherState {
-
-}
-
-class CurrentWeatherLoaded extends CurrentWeatherState {
-  final CurrentWeather currentWeather;
-
-  CurrentWeatherLoaded({required this.currentWeather});
+abstract class WeatherState  {
+const WeatherState();
 
 
 }
 
-class CurrentWeatherError extends CurrentWeatherState {
+class WeatherInitial extends WeatherState {}
+
+class WeatherLoading extends WeatherState {}
+
+class WeatherLoaded extends WeatherState {
+  final CurrentWeather? currentWeather;
+  final FiveDaysWeather? fiveDaysWeather;
+
+  const WeatherLoaded({this.currentWeather, this.fiveDaysWeather});
+
+
+}
+
+class WeatherError extends WeatherState {
   final String message;
 
-  CurrentWeatherError({required this.message});
+  const WeatherError({required this.message});
+
 
 }

@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hive/hive.dart';
+import 'package:weather_pro/Data/Model/location.dart';
+import 'package:weather_pro/Data/Repositories/WeatherRepository.dart';
+import 'package:weather_pro/Data/const.dart';
+import 'package:weather_pro/Data/local/database_service.dart';
+import 'package:weather_pro/Data/local/local_storage.dart';
+import 'package:weather_pro/Presentation/screens/home_screen.dart';
+import 'package:weather_pro/Services/ApiService.dart';
 
 import '../../Services/location_service.dart';
 
@@ -12,11 +20,14 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  var box = Hive.box('location');
+var repo = WeatherRepository(localStorage:DatabaseService(),apiService: WeatherApiService(), locationService: LocationService(DatabaseService()));
   double? _latitude;
   double? _longitude;
   String? _cityName;
   bool _isLoading = false;
-  final LocationService _locationService = LocationService();
+  final LocationService _locationService = LocationService(DatabaseService());
+
 
   @override
   void initState() {
@@ -32,11 +43,12 @@ class _LocationScreenState extends State<LocationScreen> {
 
     Position? position = await _locationService.determinePosition();
     if (position != null) {
-      setState(() {
+      setState(()async {
         _latitude = position.latitude;
         _longitude = position.longitude;
-        print(_latitude.toString()+"and "+_longitude.toString());
-        _getCityName(_latitude!, _longitude!);
+      var getCityName=  await _getCityName(_latitude!, _longitude!);
+        repo.addLocation(LocationModel(lat: _latitude, lon: _longitude, cityName: getCityName,unit: WeatherUnit.imperial.name));
+
       });
     } else {
       setState(() {
@@ -47,12 +59,13 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   // Reverse geocoding to get the city name from lat and long
-  Future<void> _getCityName(double latitude, double longitude) async {
+  Future<String?> _getCityName(double latitude, double longitude) async {
     String? cityName = await _locationService.getCityName(latitude, longitude);
     setState(() {
       _cityName = cityName;
       _isLoading = false;
     });
+    return cityName.toString();
   }
 
   @override
@@ -60,7 +73,10 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("test"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,6 +84,26 @@ class _LocationScreenState extends State<LocationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            ElevatedButton(onPressed: () {
+              setState(() {
+                box.put('status', 'true');
+
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+              });
+            }, child: Text("move to home screen"),style:ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 15, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor:
+              Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
+              foregroundColor: Colors.white,
+            ),),
             const Text(
               'Your Current City',
               style: TextStyle(
@@ -80,7 +116,10 @@ class _LocationScreenState extends State<LocationScreen> {
             _isLoading
                 ? Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
               ),
             )
                 : _cityName != null
@@ -120,7 +159,10 @@ class _LocationScreenState extends State<LocationScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     backgroundColor:
-                    Theme.of(context).colorScheme.primary,
+                    Theme
+                        .of(context)
+                        .colorScheme
+                        .primary,
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -139,11 +181,15 @@ class _LocationScreenState extends State<LocationScreen> {
               icon: const Icon(Icons.gps_fixed, color: Colors.white),
               label: const Text("Get Current City"),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15, horizontal: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
                 foregroundColor: Colors.white,
               ),
             )

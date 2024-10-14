@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:weather_pro/Presentation/screens/home_screen.dart';
 import 'package:weather_pro/Presentation/screens/location_screen.dart';
-
-
-
 
 
 class SplashScreen extends StatefulWidget {
@@ -12,29 +11,49 @@ class SplashScreen extends StatefulWidget {
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
+
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  var box = Hive.box('location');
+
+  void open() async {
+    await Hive.openBox('location');
+  }
+
+
+  // Function to Navigate to the on-boarding screen
+  route() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LocationScreen()));
+  }
+
+  // Function to Navigate to the main screen
+  elseroute() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  }
+
 
   @override
   void initState() {
     super.initState();
+    open(); // Open the Hive box
+
 
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
-    )..forward();
+    )
+      ..forward();
 
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) =>
-
-            LocationScreen() ),
-      );
+      (box.get('status') == 'true' ? elseroute : route)();
     });
   }
 
@@ -47,16 +66,16 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,  // Background color
+      backgroundColor: Colors.blueAccent, // Background color
       body: FadeTransition(
-        opacity: _animation,  // Apply the fade-in animation
+        opacity: _animation, // Apply the fade-in animation
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Rounded logo container
               Container(
-                width: 150,  // Adjust the size
+                width: 150, // Adjust the size
                 height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(75),
@@ -66,9 +85,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   ),
                 ),
               ),
-              SizedBox(height: 20),  // Space between logo and app name
+              SizedBox(height: 20), // Space between logo and app name
               Text(
-                'WeatherPro',  // App name or tagline
+                'WeatherPro', // App name or tagline
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,

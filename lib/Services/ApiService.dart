@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:weather_pro/Model/current_weather.dart';
 
-import '../Model/five_days_weather.dart';
+import '../Data/Model/current_weather.dart';
+import '../Data/Model/five_days_weather.dart';
 
 class WeatherApiService {
   //https://api.openweathermap.org/data/2.5/weather?lat=30.0444&lon=31.2357&units=metric&appid=9192d671013cdea2946b1d68fc9c6f25

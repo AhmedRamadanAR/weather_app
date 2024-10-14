@@ -1,53 +1,53 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../Data/Model/current_weather.dart';
+import '../../Data/Model/five_days_weather.dart';
 import '../../Data/Repositories/WeatherRepository.dart';
-import '../../Model/current_weather.dart';
 import 'current_weather_state.dart';
 
-class CurrentWeatherCubit extends Cubit<CurrentWeatherState> {
-  CurrentWeatherCubit({required this.currentWeatherRepo})
-      : super(CurrentWeatherInitial());
-  final WeatherRepository currentWeatherRepo;
+class WeatherCubit extends Cubit<WeatherState> {
+  WeatherCubit({required this.weatherRepo})
+      : super(WeatherInitial()){
+   getWeatherData();
+  }
+  final WeatherRepository weatherRepo;
   late CurrentWeather? myCurrentWeather;
+  late FiveDaysWeather? myFiveDaysWeather;
 
-  Future<CurrentWeather?> getCurrentWeatherByCity(
-
-      String city, String unit) async {
-
+  Future<void> getWeatherData() async {
+    emit(WeatherLoading());
     try {
-      await currentWeatherRepo
-          .getCurrentWeatherByCity(city, unit)
+      myCurrentWeather = await weatherRepo.getCurrentWeatherByLatLon();
+      myFiveDaysWeather = await weatherRepo.getFiveDaysWeather();
+      emit(WeatherLoaded(
+          currentWeather: myCurrentWeather,
+          fiveDaysWeather: myFiveDaysWeather));
+    } catch (errorMessage) {
+      emit(WeatherError(message: errorMessage.toString()));
+    }
+  }
+
+
+  Future<CurrentWeather?> getCurrentWeatherByCity() async {
+    try {
+      emit(WeatherLoading());
+
+     myCurrentWeather= await weatherRepo
+          .getCurrentWeatherByCity()
           .then((currentWeather) {
         myCurrentWeather = currentWeather;
-        emit(CurrentWeatherLoaded(currentWeather: currentWeather));
+        emit(WeatherLoaded(currentWeather: currentWeather));
       });
       return myCurrentWeather!;
     } catch (errorMessage) {
       myCurrentWeather = null;
 
-      emit(CurrentWeatherError(message: errorMessage.toString()));
+      emit(WeatherError(message: errorMessage.toString()));
     }
 
     return myCurrentWeather;
   }
 
-  Future<CurrentWeather?> getCurrentWeatherByLatLon(
-      double lat, double lon, String unit) async {
-    try {
-      await currentWeatherRepo
-          .getCurrentWeatherByLatLon(lat, lon, unit)
-          .then((currentWeather) {
-        myCurrentWeather = currentWeather;
 
-        emit(CurrentWeatherLoaded(currentWeather: currentWeather));
-      });
-    } catch (errorMessage) {
-      myCurrentWeather = null;
 
-      emit(CurrentWeatherError(message: errorMessage.toString()));
-    }
-
-    return myCurrentWeather;
-  }
 }
