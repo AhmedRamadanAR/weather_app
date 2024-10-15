@@ -97,7 +97,7 @@ class Clouds {
 
 class MainClass {
   double? temp;
-  double? feelsLike;
+  double? feels_like;
   double? temp_min;
   double? temp_max;
   int? pressure;
@@ -108,7 +108,7 @@ class MainClass {
 
   MainClass({
     required this.temp,
-    required this.feelsLike,
+    required this.feels_like,
     required this.temp_min,
     required this.temp_max,
     required this.pressure,

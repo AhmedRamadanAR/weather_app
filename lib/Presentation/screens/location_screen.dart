@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/Repositories/WeatherRepository.dart';
 import 'package:weather_pro/Data/const.dart';
@@ -21,9 +22,9 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  var box = Hive.box('location');
   var unit = Hive.box<LocationModel>('location_model');
   bool isCelsius=true;
+
 
   var repo = WeatherRepository(localStorage: DatabaseService(),
       apiService: WeatherApiService(),
@@ -35,29 +36,34 @@ class _LocationScreenState extends State<LocationScreen> {
   final LocationService _locationService = LocationService(DatabaseService());
 
 
+
   @override
-  void initState() {
-    super.initState();
-    //_getLocation(unitProvider);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var unitProvider = Provider.of<UnitProvider>(context);
+    _getLocation(unitProvider);
   }
 
-  // Fetch location and city name
   void _getLocation(UnitProvider unitProvider) async {
     setState(() {
       _isLoading = true;
     });
 
-    Position? position = await _locationService.determinePosition();
+    Position? position = await repo.determinePosition();
     if (position != null) {
-      setState(() async {
-        _latitude = position.latitude;
-        _longitude = position.longitude;
-        var getCityName = await _getCityName(_latitude!, _longitude!);
-
-        repo.addLocation(LocationModel(lat: _latitude,
-          lon: _longitude,
-          cityName: getCityName,
-          unit: unitProvider.isCelsius? 'metric' : 'imperial',));
+      _latitude = position.latitude;_longitude = position.longitude;
+      var getCityName = await _getCityName(_latitude!, _longitude!);
+      print("testo1");
+      repo.addLocation(LocationModel(lat: _latitude,
+        lon: _longitude,
+        cityName: getCityName,
+        unit: unitProvider.isCelsius? WeatherUnit.metric.name: WeatherUnit.imperial.name,));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('location', false);
+      // Update state after asynchronous work is complete
+      setState(() {
+        _isLoading = false; // Update loading state
+        _cityName = getCityName; // Update city name
       });
     } else {
       setState(() {
@@ -107,7 +113,6 @@ class _LocationScreenState extends State<LocationScreen> {
 
     ElevatedButton(onPressed: () {
     setState(() {
-    box.put('status', 'true');
 
     Navigator.pushReplacement(context,
     MaterialPageRoute(builder: (context) => HomeScreen()));

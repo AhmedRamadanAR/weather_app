@@ -6,7 +6,7 @@ import 'light_theme.dart';
 
 class ThemeProvider with ChangeNotifier{
   bool isDarkMode = false;
-  ThemeData get currentTheme => isDarkMode ? lightTheme : darkTheme;
+  ThemeData get currentTheme => isDarkMode ? darkTheme : lightTheme;
   void changeSwitchState(){
     isDarkMode= !isDarkMode;
     notifyListeners();

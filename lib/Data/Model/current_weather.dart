@@ -64,7 +64,7 @@ class Weather {
 @JsonSerializable()
 class Main {
   double? temp;
-  double? feelsLike;
+  double? feels_like;
   double? temp_min;
   double? temp_max;
   int? pressure;
@@ -74,7 +74,7 @@ class Main {
 
   Main(
       {this.temp,
-      this.feelsLike,
+      this.feels_like,
       this.temp_min,
       this.temp_max,
       this.pressure,

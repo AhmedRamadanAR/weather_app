@@ -29,8 +29,8 @@ class LocationService {
     }
 
     final position = await Geolocator.getCurrentPosition();
-    final city= await getCityName(position.latitude, position.longitude);
-      _localStorage.addLocation(LocationModel(lat: position.latitude, lon: position.longitude, cityName:city,unit: WeatherUnit.metric.name));
+    // final city= await getCityName(position.latitude, position.longitude);
+    //   _localStorage.addLocation(LocationModel(lat: position.latitude, lon: position.longitude, cityName:city,unit: WeatherUnit.metric.name));
     return position ;
   }
 

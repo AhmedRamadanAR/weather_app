@@ -5,6 +5,8 @@ import '../cubit/current_weather_state.dart';
 import '../widgets/current_weather_widget.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,8 @@ class HomeScreen extends StatelessWidget {
                           child: Image(
                               image: AssetImage('assets/images/sun.png'))),
                     ),SizedBox(height: 20,),
-                    CurrentWeatherWidget(currentWeather: state.currentWeather)
+
+                    CurrentWeatherWidget(currentWeather: state.currentWeather!)
                   ],
                 )),
               ),

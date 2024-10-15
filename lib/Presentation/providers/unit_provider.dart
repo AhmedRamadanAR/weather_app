@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class UnitProvider with ChangeNotifier{
-  bool isCelsius = true;
+  bool isCelsius = false;
   void changeSwitchState(){
     isCelsius= !isCelsius;
     notifyListeners();

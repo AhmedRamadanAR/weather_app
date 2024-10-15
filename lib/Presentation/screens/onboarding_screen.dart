@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:weather_pro/Components/color.dart';
-import 'package:weather_pro/Onboboarding/onboarding_items.dart';
-import 'package:weather_pro/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:weather_pro/Components/color.dart';
+import 'package:weather_pro/Data/Model/onboarding_items.dart';
+import 'package:weather_pro/Presentation/screens/location_screen.dart';
 
-class OnboardingView extends StatefulWidget {
-  const OnboardingView({super.key});
+class onboarding_screen extends StatefulWidget {
+  const onboarding_screen({super.key});
 
   @override
-  State<OnboardingView> createState() => _OnboardingViewState();
+  State<onboarding_screen> createState() => _onboarding_screenState();
 }
 
-class _OnboardingViewState extends State<OnboardingView> {
+class _onboarding_screenState extends State<onboarding_screen> {
   final controller = OnboardingItems();
   final pageController = PageController();
 
@@ -105,11 +105,11 @@ class _OnboardingViewState extends State<OnboardingView> {
       child: TextButton(
         onPressed: () async {
           final pres = await SharedPreferences.getInstance();
-          pres.setBool("onboarding", true);
+          pres.setBool("onboarding", false);
 
-          // After we press get started button this onboarding value becomes true
+          // Navigate to LocationScreen
           if (!mounted) return;
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LocationScreen()));
         },
         child: const Text("Get started", style: TextStyle(color: Colors.white)),
       ),
