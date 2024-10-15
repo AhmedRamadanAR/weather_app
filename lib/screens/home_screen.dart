@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import '../services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
+import '../services/notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
-
   final String title;
+  final NotificationService notificationService;
+
+  const HomeScreen({
+    super.key,
+    required this.title,
+    required this.notificationService,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -37,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _longitude = position.longitude;
         _getCityName(_latitude!, _longitude!);
       });
+      _showLocationNotification(_latitude!, _longitude!);
     } else {
       setState(() {
         _isLoading = false;
@@ -52,6 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _cityName = cityName;
       _isLoading = false;
     });
+  }
+
+  // Show notification with location data
+  Future<void> _showLocationNotification(double latitude, double longitude) async {
+    await widget.notificationService.showNotification(
+      0,
+      'Location Update',
+      'Lat: $latitude, Lon: $longitude',
+    );
   }
 
   @override
@@ -138,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.gps_fixed, color: Colors.white),
               label: const Text("Get Current City"),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 15, horizontal: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
