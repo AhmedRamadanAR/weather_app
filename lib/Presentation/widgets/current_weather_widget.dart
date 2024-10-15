@@ -12,6 +12,8 @@ class CurrentWeatherWidget extends StatelessWidget {
 
     return Column(mainAxisSize: MainAxisSize.min,
       children: [
+
+        Text("city : "+currentWeather.name.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.black),),
         Text(
           currentWeather!.main!.temp.toString() + "°",
           style: TextStyle(color: Colors.white, fontSize: 42),

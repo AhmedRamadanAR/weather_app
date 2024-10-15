@@ -27,7 +27,7 @@ void main() async {
   await Hive.openBox<LocationModel>('location_model');
   final localStorage=DatabaseService();
 
-  final locationService=LocationService(localStorage);
+  final locationService=LocationService();
   final apiService=WeatherApiService();
 final weatherRepo=WeatherRepository(locationService: locationService, localStorage: localStorage, apiService: apiService);
   runApp(

@@ -6,5 +6,9 @@ abstract  class LocalStorage{
   void updateLocation(LocationModel locationModel);
   void deleteLocation() ;
   void updateLocationScreenState();
+  Future<void> setPreferredCity(String cityName);
+  Future<String?> getPreferredCity();
+  Future<void> clearPreferredCity();
+
 
 }

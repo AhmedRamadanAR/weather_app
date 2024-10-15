@@ -5,7 +5,9 @@ import '../cubit/current_weather_state.dart';
 import '../widgets/current_weather_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +33,35 @@ class HomeScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                     child: Column(
                   children: [
-                    Card(color: Colors.transparent,elevation: 0,
+                    Padding(
+                        padding: EdgeInsets.all(40),
+                        child: SearchBar(
+                          controller: textEditingController,
+                          onChanged: (value )=>textEditingController.text=value,
+                          leading: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(Icons.search)),
+                          trailing:<Widget>[ Padding(
+                            padding: EdgeInsets.all(10),
+                            child: GestureDetector(child: Icon(Icons.gps_fixed),onTap: (){
+                              final cityName = textEditingController.text;
+                              context.read<WeatherCubit>().addCity(cityName);
+
+                              context.read<WeatherCubit>().getCurrentWeatherByCity(cityName);
+
+                            },),
+                          ),
+                        ])),
+                    Card(
+                      color: Colors.transparent,
+                      elevation: 0,
                       child: Container(
                           child: Image(
                               image: AssetImage('assets/images/sun.png'))),
-                    ),SizedBox(height: 20,),
-
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     CurrentWeatherWidget(currentWeather: state.currentWeather!)
                   ],
                 )),
@@ -45,8 +70,7 @@ class HomeScreen extends StatelessWidget {
           } else if (state is WeatherLoading) {
             return Center(child: CircularProgressIndicator());
           } else {
-            return Center(child: Text('No weather data available'))
-            ;
+            return Center(child: Text('No weather data available'));
           }
         },
       ),

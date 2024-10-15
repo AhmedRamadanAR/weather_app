@@ -7,12 +7,23 @@ import 'current_weather_state.dart';
 class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit({required this.weatherRepo})
       : super(WeatherInitial()){
-   getWeatherData();
+    _initializeWeatherData();
   }
   final WeatherRepository weatherRepo;
   late CurrentWeather? myCurrentWeather;
   late FiveDaysWeather? myFiveDaysWeather;
-
+  Future<void> _initializeWeatherData() async {
+    String? preferredCity = await weatherRepo.localStorage.getPreferredCity(); // Use LocalStorage
+    print("prefered city "+preferredCity.toString());
+    if (preferredCity != null) {
+      getCurrentWeatherByCity(preferredCity);
+    } else {
+      getWeatherData();
+    }
+  }
+  void addCity(String cityName){
+   weatherRepo.localStorage.setPreferredCity(cityName) ;
+  }
   Future<void> getWeatherData() async {
     emit(WeatherLoading());
     try {
@@ -27,22 +38,18 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
+  Future<CurrentWeather?> getCurrentWeatherByCity(String cityName) async {
+    emit(WeatherLoading());
 
-  Future<CurrentWeather?> getCurrentWeatherByCity() async {
     try {
-      emit(WeatherLoading());
+      myCurrentWeather = await weatherRepo.getCurrentWeatherByCity(cityName);
 
-     myCurrentWeather= await weatherRepo
-          .getCurrentWeatherByCity()
-          .then((currentWeather) {
-        myCurrentWeather = currentWeather;
-        emit(WeatherLoaded(currentWeather: currentWeather));
-      });
+      emit(WeatherLoaded(currentWeather: myCurrentWeather)); // Use existing myFiveDaysWeather
       return myCurrentWeather!;
-    } catch (errorMessage) {
-      myCurrentWeather = null;
+    } catch (errorMessage) {print(errorMessage);
+    myCurrentWeather = null;
 
-      emit(WeatherError(message: errorMessage.toString()));
+    emit(WeatherError(message: errorMessage.toString()));
     }
 
     return myCurrentWeather;

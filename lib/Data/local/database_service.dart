@@ -42,4 +42,20 @@ void changeLocationScreenState () async{
 
      }
 
+  @override
+  Future<void> clearPreferredCity() async {
+    await showLocationScreenBox.delete('preferredCity');
+  }
+
+  @override
+  Future<String?> getPreferredCity() async {
+    return showLocationScreenBox.get('preferredCity') as String?;
+  }
+
+
+  @override
+  Future<void> setPreferredCity(String cityName) async {
+    await showLocationScreenBox.put('preferredCity', cityName);
+  }
+
 }

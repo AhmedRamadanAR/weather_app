@@ -28,12 +28,12 @@ class _LocationScreenState extends State<LocationScreen> {
 
   var repo = WeatherRepository(localStorage: DatabaseService(),
       apiService: WeatherApiService(),
-      locationService: LocationService(DatabaseService()));
+      locationService: LocationService());
   double? _latitude;
   double? _longitude;
   String? _cityName;
   bool _isLoading = false;
-  final LocationService _locationService = LocationService(DatabaseService());
+  final LocationService _locationService = LocationService();
 
 
 
