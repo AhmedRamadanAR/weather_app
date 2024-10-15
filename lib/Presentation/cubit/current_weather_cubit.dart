@@ -23,6 +23,7 @@ class WeatherCubit extends Cubit<WeatherState> {
           currentWeather: myCurrentWeather,
           fiveDaysWeather: myFiveDaysWeather));
     } catch (errorMessage) {
+      print(errorMessage.toString());
       emit(WeatherError(message: errorMessage.toString()));
     }
   }

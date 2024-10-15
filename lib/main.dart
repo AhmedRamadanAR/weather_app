@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
+import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 
 import 'package:weather_pro/Presentation/screens/splash_screen.dart';
 import 'package:weather_pro/Services/location_service.dart';
@@ -37,6 +38,7 @@ final weatherRepo=WeatherRepository(locationService: locationService, localStora
           create: (context) => WeatherCubit(
             weatherRepo: weatherRepo),
             ),
+        ChangeNotifierProvider(create:(context)=>UnitProvider())
 
         //BlocProvider(create: (context)=>LocationCubit(weatherRepo: weatherRepo))
 

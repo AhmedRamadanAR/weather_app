@@ -96,6 +96,7 @@ class Wind {
   factory Wind.fromJson(Map<String, dynamic> json) => _$WindFromJson(json);
 }
 
+
 @JsonSerializable()
 class Clouds {
   int? all;
