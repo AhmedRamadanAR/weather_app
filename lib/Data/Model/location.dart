@@ -17,4 +17,18 @@ class LocationModel extends HiveObject {
   String? unit;
 
   LocationModel({required this.lat, required this.lon, required this.cityName,required this.unit});
+  LocationModel copyWith({
+    double? lat,
+    double? lon,
+    String? cityName,
+    String? unit,
+  }) {
+    return LocationModel(
+      lat: lat ?? this.lat,
+      lon: lon ?? this.lon,
+      cityName: cityName ?? this.cityName,
+      unit:unit ?? this.unit,
+    );
+  }
+
 }

@@ -5,10 +5,12 @@ abstract  class LocalStorage{
   LocationModel getLocation();
   void updateLocation(LocationModel locationModel);
   void deleteLocation() ;
-  void updateLocationScreenState();
+
   Future<void> setPreferredCity(String cityName);
   Future<String?> getPreferredCity();
-  Future<void> clearPreferredCity();
+
+void updateSwitch(bool value);
+  bool getSwitch();
 
 
 }

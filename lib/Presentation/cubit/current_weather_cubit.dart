@@ -1,34 +1,45 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Data/Model/current_weather.dart';
 import '../../Data/Model/five_days_weather.dart';
+import '../../Data/Model/location.dart';
 import '../../Data/Repositories/WeatherRepository.dart';
+import '../../Data/const.dart';
 import 'current_weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
-  WeatherCubit({required this.weatherRepo})
-      : super(WeatherInitial()){
-    _initializeWeatherData();
+  WeatherCubit({required this.weatherRepo}) : super(WeatherInitial()) {
+    initializeWeatherData();
   }
+
   final WeatherRepository weatherRepo;
   late CurrentWeather? myCurrentWeather;
   late FiveDaysWeather? myFiveDaysWeather;
-  Future<void> _initializeWeatherData() async {
-    String? preferredCity = await weatherRepo.localStorage.getPreferredCity(); // Use LocalStorage
-    print("prefered city "+preferredCity.toString());
+
+  Future<void> initializeWeatherData() async {
+    String? preferredCity = await weatherRepo.getPreferredCity();
+    print("preferred city: " + preferredCity.toString());
+
+    final isCelsius = weatherRepo.getUnit();
+
     if (preferredCity != null) {
-      getCurrentWeatherByCity(preferredCity);
+      getCurrentWeatherByCity(preferredCity, unit:   isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
     } else {
-      getWeatherData();
+      getWeatherData( unit :isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
     }
   }
-  void addCity(String cityName){
-   weatherRepo.localStorage.setPreferredCity(cityName) ;
+  void getLocation(){
+    weatherRepo.getLocation();
   }
-  Future<void> getWeatherData() async {
+
+  void addCity(String cityName) {
+    weatherRepo.setPreferredCity(cityName);
+  }
+
+  Future<void> getWeatherData({String unit = 'metric'}) async {
     emit(WeatherLoading());
     try {
-      myCurrentWeather = await weatherRepo.getCurrentWeatherByLatLon();
-      myFiveDaysWeather = await weatherRepo.getFiveDaysWeather();
+      myCurrentWeather = await weatherRepo.getCurrentWeatherByLatLon(unit);
+      myFiveDaysWeather = await weatherRepo.getFiveDaysWeather(unit);
       emit(WeatherLoaded(
           currentWeather: myCurrentWeather,
           fiveDaysWeather: myFiveDaysWeather));
@@ -38,23 +49,31 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
-  Future<CurrentWeather?> getCurrentWeatherByCity(String cityName) async {
+  Future<CurrentWeather?> getCurrentWeatherByCity(String cityName, {String unit = 'metric'}) async {
     emit(WeatherLoading());
 
     try {
-      myCurrentWeather = await weatherRepo.getCurrentWeatherByCity(cityName);
+      myCurrentWeather = await weatherRepo.getCurrentWeatherByCity(cityName,unit);
 
-      emit(WeatherLoaded(currentWeather: myCurrentWeather)); // Use existing myFiveDaysWeather
+      emit(WeatherLoaded(
+          currentWeather: myCurrentWeather));
       return myCurrentWeather!;
-    } catch (errorMessage) {print(errorMessage);
-    myCurrentWeather = null;
+    } catch (errorMessage) {
+      print(errorMessage);
+      myCurrentWeather = null;
 
-    emit(WeatherError(message: errorMessage.toString()));
+      emit(WeatherError(message: errorMessage.toString()));
     }
 
     return myCurrentWeather;
   }
-
-
-
+  void updateUnit(bool isCelsius){
+    weatherRepo.updateUnit(isCelsius);
+  }
+  bool getUnit(){
+    return weatherRepo.getUnit();
+  }
+  void updatLocation(LocationModel locationModel) {
+    weatherRepo.updatLocation(locationModel);
+  }
 }

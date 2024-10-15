@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/current_weather_cubit.dart';
 import '../cubit/current_weather_state.dart';
+import '../widgets/DrawerWidget.dart';
 import '../widgets/current_weather_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,6 +13,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerWidget(),
+      appBar: AppBar(
+elevation: 5,
+        title: Text(
+          "Weather Pro",
+          style: TextStyle(fontWeight: FontWeight.w300),
+        ),
+      ),
       body: BlocBuilder<WeatherCubit, WeatherState>(
         builder: (context, state) {
           print(state.toString());
@@ -36,22 +45,30 @@ class HomeScreen extends StatelessWidget {
                     Padding(
                         padding: EdgeInsets.all(40),
                         child: SearchBar(
-                          controller: textEditingController,
-                          onChanged: (value )=>textEditingController.text=value,
-                          leading: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Icon(Icons.search)),
-                          trailing:<Widget>[ Padding(
-                            padding: EdgeInsets.all(10),
-                            child: GestureDetector(child: Icon(Icons.gps_fixed),onTap: (){
-                              final cityName = textEditingController.text;
-                              context.read<WeatherCubit>().addCity(cityName);
+                            controller: textEditingController,
+                            onChanged: (value) =>
+                                textEditingController.text = value,
+                            leading: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Icon(Icons.search)),
+                            trailing: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: GestureDetector(
+                                  child: Icon(Icons.gps_fixed),
+                                  onTap: () {
+                                    final cityName = textEditingController.text;
+                                    context
+                                        .read<WeatherCubit>()
+                                        .addCity(cityName);
 
-                              context.read<WeatherCubit>().getCurrentWeatherByCity(cityName);
-
-                            },),
-                          ),
-                        ])),
+                                    context
+                                        .read<WeatherCubit>()
+                                        .getCurrentWeatherByCity(cityName);
+                                  },
+                                ),
+                              ),
+                            ])),
                     Card(
                       color: Colors.transparent,
                       elevation: 0,

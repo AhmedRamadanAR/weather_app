@@ -6,7 +6,6 @@ import 'package:weather_pro/Services/location_service.dart';
 
 import '../Model/current_weather.dart';
 import '../Model/five_days_weather.dart';
-import '../local/local_storage.dart';
 
 class WeatherRepository {
   WeatherRepository(
@@ -25,9 +24,7 @@ class WeatherRepository {
     return locationService.getCityName(latitude, longitude);
   }
 
-  void skipLocalScreen() {
-    localStorage.updateLocationScreenState();
-  }
+
 
   Future<void> _fetchLocation() async {
     _location = localStorage.getLocation();
@@ -48,7 +45,14 @@ class WeatherRepository {
         .getLocation()
         .unit
         .toString());
+    print("city "+ _location.cityName.toString());
     return localStorage.getLocation();
+  }
+  void updateUnit(bool isCelsius){
+    localStorage.updateSwitch(isCelsius);
+  }
+  bool getUnit(){
+  return   localStorage.getSwitch();
   }
 
   void updatLocation(LocationModel locationModel) {
@@ -58,34 +62,34 @@ class WeatherRepository {
     await localStorage.setPreferredCity(cityName);
   }
 
-  Future<void> clearPreferredCity() async {
-    await localStorage.clearPreferredCity();
-  }
 
   Future<String?> getPreferredCity() async {
-    return localStorage.getPreferredCity();
+    return await localStorage.getPreferredCity();
   }
-  Future<CurrentWeather> getCurrentWeatherByCity(String cityName) async {
+  Future<void> setPreferredCity(String cityName) async {
+    await localStorage.setPreferredCity(cityName);
+  }
+  Future<CurrentWeather> getCurrentWeatherByCity(String? cityName, String unit) async {
     _fetchLocation();
     print(cityName);
     localStorage.updateLocation(
         LocationModel(lat: 1.0, lon: 1.0, cityName: cityName, unit: _location.unit.toString()));
     return await apiService.getCurrentWeatherByCity(
-        cityName, _location.unit.toString());
+        cityName??_location.cityName.toString(), unit);
   }
 
-  Future<CurrentWeather> getCurrentWeatherByLatLon() async {
+  Future<CurrentWeather> getCurrentWeatherByLatLon(String unit) async {
     await _fetchLocation();
     return await apiService.getCurrentWeatherByLatLon(
         _location.lat!.toDouble(), _location.lon!.toDouble(),
-        _location.unit.toString());
+       unit);
   }
 
-  Future<FiveDaysWeather> getFiveDaysWeather() async {
+  Future<FiveDaysWeather> getFiveDaysWeather(String unit) async {
     await _fetchLocation();
     return await apiService.getFiveDaysWeatherByLatLon(
         _location.lat!.toDouble(), _location.lon!.toDouble(),
-        _location.unit.toString());
+        unit);
   }
 
 

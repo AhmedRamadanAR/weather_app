@@ -5,11 +5,8 @@ import 'package:weather_pro/Data/local/local_storage.dart';
 class DatabaseService implements LocalStorage{
   final _locationBox = Hive.box<LocationModel>('location_model');
   final showLocationScreenBox = Hive.box('location');
+final isCelsius=Hive.box("isCelsius");
 
-void changeLocationScreenState () async{
-  await showLocationScreenBox.put('status', 'true');
-
-}
   @override
   void addLocation(LocationModel locationModel)async {
 
@@ -35,17 +32,7 @@ void changeLocationScreenState () async{
     await _locationBox.putAt(0, locationModel);
   }
 
-  @override
-  void updateLocationScreenState() {
 
-    showLocationScreenBox.put('status', 'true');
-
-     }
-
-  @override
-  Future<void> clearPreferredCity() async {
-    await showLocationScreenBox.delete('preferredCity');
-  }
 
   @override
   Future<String?> getPreferredCity() async {
@@ -56,6 +43,16 @@ void changeLocationScreenState () async{
   @override
   Future<void> setPreferredCity(String cityName) async {
     await showLocationScreenBox.put('preferredCity', cityName);
+  }
+
+  @override
+  bool getSwitch() {
+   return  isCelsius.get('isCelsius',defaultValue: true);
+  }
+
+  @override
+  void updateSwitch(bool value) async{
+    await isCelsius.put('isCelsius', value);
   }
 
 }

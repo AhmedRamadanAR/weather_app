@@ -22,7 +22,7 @@ void main() async {
   // initialize hive with the app directory
   Hive.init(path.path);
   Hive.registerAdapter(LocationModelAdapter());
-
+ await Hive.openBox("isCelsius");
   await Hive.openBox('location');
   await Hive.openBox<LocationModel>('location_model');
   final localStorage=DatabaseService();
@@ -38,7 +38,7 @@ final weatherRepo=WeatherRepository(locationService: locationService, localStora
           create: (context) => WeatherCubit(
             weatherRepo: weatherRepo),
             ),
-        ChangeNotifierProvider(create:(context)=>UnitProvider())
+        ChangeNotifierProvider(create:(context)=>UnitProvider(weatherRepository: weatherRepo))
 
         //BlocProvider(create: (context)=>LocationCubit(weatherRepo: weatherRepo))
 
