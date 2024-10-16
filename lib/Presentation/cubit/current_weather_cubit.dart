@@ -22,7 +22,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     final isCelsius = weatherRepo.getUnit();
 
     if (preferredCity != null) {
-      getCurrentWeatherByCity(preferredCity, unit:   isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
+      getCurrent_FiveDaysWeatherByCity(preferredCity, unit:   isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
     } else {
       getWeatherData( unit :isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
     }
@@ -49,15 +49,15 @@ class WeatherCubit extends Cubit<WeatherState> {
     }
   }
 
-  Future<CurrentWeather?> getCurrentWeatherByCity(String cityName, {String unit = 'metric'}) async {
+  void getCurrent_FiveDaysWeatherByCity(String cityName, {String unit = 'metric'}) async {
     emit(WeatherLoading());
 
     try {
       myCurrentWeather = await weatherRepo.getCurrentWeatherByCity(cityName,unit);
-
+       myFiveDaysWeather=await weatherRepo.getFiveDaysWeatherByCity(cityName, unit);
       emit(WeatherLoaded(
-          currentWeather: myCurrentWeather));
-      return myCurrentWeather!;
+          currentWeather: myCurrentWeather,fiveDaysWeather: myFiveDaysWeather
+      ));
     } catch (errorMessage) {
       print(errorMessage);
       myCurrentWeather = null;
@@ -65,7 +65,6 @@ class WeatherCubit extends Cubit<WeatherState> {
       emit(WeatherError(message: errorMessage.toString()));
     }
 
-    return myCurrentWeather;
   }
   void updateUnit(bool isCelsius){
     weatherRepo.updateUnit(isCelsius);

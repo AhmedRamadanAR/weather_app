@@ -35,16 +35,7 @@ class WeatherRepository {
   }
 
   LocationModel getLocation() {
-    print("lat :" + localStorage
-        .getLocation()
-        .lat
-        .toString() + "long" + localStorage
-        .getLocation()
-        .lon
-        .toString() + 'unit' + localStorage
-        .getLocation()
-        .unit
-        .toString());
+
     print("city "+ _location.cityName.toString());
     return localStorage.getLocation();
   }
@@ -72,6 +63,7 @@ class WeatherRepository {
   Future<CurrentWeather> getCurrentWeatherByCity(String? cityName, String unit) async {
     _fetchLocation();
     print(cityName);
+
     localStorage.updateLocation(
         LocationModel(lat: 1.0, lon: 1.0, cityName: cityName, unit: _location.unit.toString()));
     return await apiService.getCurrentWeatherByCity(
@@ -90,6 +82,13 @@ class WeatherRepository {
     return await apiService.getFiveDaysWeatherByLatLon(
         _location.lat!.toDouble(), _location.lon!.toDouble(),
         unit);
+  }
+  Future<FiveDaysWeather>getFiveDaysWeatherByCity(String city,String unit)async{
+    await _fetchLocation();
+    localStorage.updateLocation(
+        LocationModel(lat: 1.0, lon: 1.0, cityName: city, unit: _location.unit.toString()));
+    return await apiService.getFiveDaysWeatherByCity(city, unit);
+
   }
 
 

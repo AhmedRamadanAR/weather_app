@@ -52,7 +52,7 @@ class _LocationScreenState extends State<LocationScreen> {
       var getCityName = await _getCityName(_latitude!, _longitude!);
       setState(() {
         _isLoading = true;
-        _cityName = getCityName; // Update city name
+        _cityName = getCityName;
         _isButtonEnabled = _cityName != null;
       });
       print("testo1");
