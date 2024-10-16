@@ -6,6 +6,7 @@ import '../cubit/current_weather_cubit.dart';
 import '../cubit/current_weather_state.dart';
 import '../providers/unit_provider.dart';
 import '../widgets/DrawerWidget.dart';
+import '../widgets/chart.dart';
 import '../widgets/next_forecast.dart';
 import '../widgets/weather_forecast.dart';
 
@@ -86,6 +87,11 @@ elevation: 5,
                         ],
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: MyChart(fiveDaysData: state!.fiveDaysWeather!.list!),
+                    ),
+
 
                   ],
                 )),
