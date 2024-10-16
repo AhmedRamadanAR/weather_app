@@ -76,16 +76,16 @@ elevation: 5,
                         forecastData: state.fiveDaysWeather!.list!,
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(16.0),
-                    //   child: NextForecast(
-                    //     forecastData: [
-                    //       {"day": "Monday", "icon": "cloud", "high": "13", "low": "10"},
-                    //       {"day": "Tuesday", "icon": "cloud", "high": "17", "low": "12"},
-                    //       {"day": "Wednesday", "icon": "sunny", "high": "20", "low": "14"},
-                    //     ],
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: NextForecast(
+                        forecastData: [
+                          {"day": "Monday", "icon": "cloud", "high": "13", "low": "10"},
+                          {"day": "Tuesday", "icon": "cloud", "high": "17", "low": "12"},
+                          {"day": "Wednesday", "icon": "sunny", "high": "20", "low": "14"},
+                        ],
+                      ),
+                    ),
 
                   ],
                 )),

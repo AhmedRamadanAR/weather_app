@@ -196,7 +196,7 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
           ),
           const SizedBox(height: 10),
           SizedBox(
-            height: 150,
+            height: 200,
             child: ListView.builder(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
@@ -229,26 +229,34 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.cloud, size: 30),
-                      const SizedBox(height: 5),
-                      Text(
-                        '${data.main?.temp}${isCelsius ? "°C" : "°F"} ',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        formattedTime,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Expanded( // Wrap the Column with Expanded
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.network(
+                              "https://openweathermap.org/img/wn/${data.weather?[0].icon}.png",
+                              // You might want to adjust the image size here if it's too large
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '${data.main?.temp}${isCelsius ? "°C" : "°F"} ',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              formattedTime,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 );
               },
             ),
-          ),
-        ],
-      ),
-    );
+          )]));
+
   }
 }
 
