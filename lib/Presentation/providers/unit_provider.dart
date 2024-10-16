@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
 import 'package:weather_pro/Data/Repositories/WeatherRepository.dart';
 
 class UnitProvider with ChangeNotifier {
   final WeatherRepository weatherRepository;
-  bool isCelsius = true; // Default value
+  bool isCelsius = true;
 
   UnitProvider({required this.weatherRepository}) {
     _initialize();

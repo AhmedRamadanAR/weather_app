@@ -8,8 +8,7 @@ final ThemeData lightTheme = ThemeData(
     secondary: Colors.yellow, // Accent color
   ),
   appBarTheme: AppBarTheme(
-    backgroundColor:    Color.fromARGB(255, 8, 39, 85),
+    backgroundColor: Colors.blue,
     foregroundColor: Colors.white, // Text color in AppBar
-
   ),
 );

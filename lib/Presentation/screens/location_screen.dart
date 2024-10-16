@@ -9,6 +9,7 @@ import 'package:weather_pro/Data/const.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 import 'package:weather_pro/Presentation/screens/home_screen.dart';
+import 'package:weather_pro/Presentation/widgets/ReusableSwitch.dart';
 import 'package:weather_pro/Presentation/widgets/switch_widget.dart';
 import 'package:weather_pro/Services/ApiService.dart';
 
@@ -112,7 +113,13 @@ class _LocationScreenState extends State<LocationScreen> {
                   unitProvider.isCelsius ? "Celsius °C " : "Fahrenheit °F",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                 ),
-                trailing: SwitchWidget(),
+                  trailing: ReusableSwitch(
+                value: unitProvider.isCelsius,
+                onChanged: (newValue) {
+                  unitProvider.changeSwitchState();
+                },
+                switchType: SwitchType.unit, // Specify switch type
+              ),
               ),
               ElevatedButton(
                 onPressed: _isButtonEnabled

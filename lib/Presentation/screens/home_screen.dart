@@ -6,7 +6,6 @@ import '../cubit/current_weather_cubit.dart';
 import '../cubit/current_weather_state.dart';
 import '../providers/unit_provider.dart';
 import '../widgets/DrawerWidget.dart';
-import '../widgets/current_weather_widget.dart';
 import '../widgets/next_forecast.dart';
 import '../widgets/weather_forecast.dart';
 
