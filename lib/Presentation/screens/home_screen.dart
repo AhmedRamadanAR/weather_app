@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_pro/Presentation/widgets/searchbar_widget.dart';
 import '../cubit/current_weather_cubit.dart';
 import '../cubit/current_weather_state.dart';
 import '../providers/unit_provider.dart';
@@ -50,31 +50,15 @@ elevation: 5,
                   children: [
                     Padding(
                         padding: EdgeInsets.all(40),
-                        child: SearchBar(
-                            controller: textEditingController,
-                            onChanged: (value) =>
-                                textEditingController.text = value,
-                            leading: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Icon(Icons.search)),
-                            trailing: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: GestureDetector(
-                                  child: Icon(Icons.gps_fixed),
-                                  onTap: () {
-                                    final cityName = textEditingController.text;
-                                    context
-                                        .read<WeatherCubit>()
-                                        .addCity(cityName);
+                        child: SearchBarWidget(textEditingController: textEditingController, onSearchClicked: (){
+                          context
+                              .read<WeatherCubit>()
+                              .addCity(textEditingController.text);
 
-                                    context
-                                        .read<WeatherCubit>()
-                                        .getCurrent_FiveDaysWeatherByCity(cityName);
-                                  },
-                                ),
-                              ),
-                            ])),
+                          context
+                              .read<WeatherCubit>()
+                              .getCurrent_FiveDaysWeatherByCity(textEditingController.text);
+                        })),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: WeatherHourlyForecast(
@@ -92,26 +76,45 @@ elevation: 5,
                         forecastData: state.fiveDaysWeather!.list!,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: NextForecast(
-                        forecastData: [
-                          {"day": "Monday", "icon": "cloud", "high": "13", "low": "10"},
-                          {"day": "Tuesday", "icon": "cloud", "high": "17", "low": "12"},
-                          {"day": "Wednesday", "icon": "sunny", "high": "20", "low": "14"},
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: NextForecast(
+                    //     forecastData: [
+                    //       {"day": "Monday", "icon": "cloud", "high": "13", "low": "10"},
+                    //       {"day": "Tuesday", "icon": "cloud", "high": "17", "low": "12"},
+                    //       {"day": "Wednesday", "icon": "sunny", "high": "20", "low": "14"},
+                    //     ],
+                    //   ),
+                    // ),
 
-                   // CurrentWeatherWidget(currentWeather: state.currentWeather!)
                   ],
                 )),
               ),
             );
-          } else if (state is WeatherLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Center(child: Text('No weather data available'));
+          } if (state is WeatherLoading) {
+            return Center(child: Container(
+              width: 60.0,
+              height: 60.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.0),
+                border: Border.all(color: Colors.blue, width: 2.0),
+              ),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                strokeWidth: 5.0,
+              ),
+            ));
+          } if (state is WeatherError) {
+            return Center(child: SearchBarWidget(textEditingController: textEditingController, onSearchClicked: (){ context
+                .read<WeatherCubit>()
+                .addCity(textEditingController.text);
+
+            context
+                .read<WeatherCubit>()
+                .getCurrent_FiveDaysWeatherByCity(textEditingController.text);}));
+          }else{
+            return Center();
           }
         },
       ),

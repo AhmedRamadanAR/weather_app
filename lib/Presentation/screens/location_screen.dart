@@ -80,7 +80,6 @@ class _LocationScreenState extends State<LocationScreen> {
     }
   }
 
-  // Reverse geocoding to get the city name from lat and long
   Future<String?> _getCityName(double latitude, double longitude) async {
     String? cityName = await _locationService.getCityName(latitude, longitude);
       setState(() {
@@ -95,10 +94,7 @@ class _LocationScreenState extends State<LocationScreen> {
     var unitProvider = Provider.of<UnitProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("test"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(32.0),

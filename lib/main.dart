@@ -24,6 +24,8 @@ void main() async {
   Hive.registerAdapter(LocationModelAdapter());
  await Hive.openBox("isCelsius");
   await Hive.openBox('location');
+  await Hive.openBox("isDarkMode");
+
   await Hive.openBox<LocationModel>('location_model');
   final localStorage=DatabaseService();
 
@@ -33,7 +35,7 @@ final weatherRepo=WeatherRepository(locationService: locationService, localStora
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider(weatherRepository: weatherRepo)),
         BlocProvider(
           create: (context) => WeatherCubit(
             weatherRepo: weatherRepo),

@@ -22,7 +22,6 @@ class _DrawerState extends State<DrawerWidget> {
 
     return Drawer(
       elevation: 1,
-      backgroundColor: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [

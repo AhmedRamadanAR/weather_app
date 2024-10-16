@@ -42,7 +42,7 @@ class _onboarding_screenState extends State<onboarding_screen> {
               effect: const WormEffect(
                 dotHeight: 12,
                 dotWidth: 12,
-                activeDotColor: primaryColor,
+                activeDotColor: Color.fromARGB(255, 12, 66, 172),
               ),
             ),
 
@@ -103,6 +103,9 @@ class _onboarding_screenState extends State<onboarding_screen> {
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 12, 66, 172)),
+        ),
         onPressed: () async {
           final pres = await SharedPreferences.getInstance();
           pres.setBool("onboarding", false);

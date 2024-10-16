@@ -40,10 +40,11 @@ class WeatherRepository {
     return localStorage.getLocation();
   }
   void updateUnit(bool isCelsius){
-    localStorage.updateSwitch(isCelsius);
+    localStorage.updateSwitchUnit(isCelsius);
   }
-  bool getUnit(){
-  return   localStorage.getSwitch();
+
+  bool getSwitchUnit(){
+  return   localStorage.getSwitchUnit();
   }
 
   void updatLocation(LocationModel locationModel) {
@@ -89,6 +90,12 @@ class WeatherRepository {
         LocationModel(lat: 1.0, lon: 1.0, cityName: city, unit: _location.unit.toString()));
     return await apiService.getFiveDaysWeatherByCity(city, unit);
 
+  }
+  void updateSwitchTheme(bool isDarkMode){
+    localStorage.updateSwitchTheme(isDarkMode);
+  }
+  bool getSwitchTheme(){
+   return localStorage.getSwitchTheme();
   }
 
 

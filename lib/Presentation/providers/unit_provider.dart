@@ -11,7 +11,7 @@ class UnitProvider with ChangeNotifier {
 
 
  void _initialize(){
- isCelsius=   weatherRepository.getUnit();
+ isCelsius=   weatherRepository.getSwitchUnit();
  notifyListeners();
  }
   void changeSwitchState() async {

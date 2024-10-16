@@ -19,7 +19,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     String? preferredCity = await weatherRepo.getPreferredCity();
     print("preferred city: " + preferredCity.toString());
 
-    final isCelsius = weatherRepo.getUnit();
+    final isCelsius = weatherRepo.getSwitchUnit();
 
     if (preferredCity != null) {
       getCurrent_FiveDaysWeatherByCity(preferredCity, unit:   isCelsius ? WeatherUnit.metric.name : WeatherUnit.imperial.name);
@@ -70,7 +70,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     weatherRepo.updateUnit(isCelsius);
   }
   bool getUnit(){
-    return weatherRepo.getUnit();
+    return weatherRepo.getSwitchUnit();
   }
   void updatLocation(LocationModel locationModel) {
     weatherRepo.updatLocation(locationModel);

@@ -10,8 +10,7 @@ import '../theme/theme_provider.dart';
 class ReusableSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
-  final SwitchType switchType; // Enum to define switch type
-
+  final SwitchType switchType;
   const ReusableSwitch({
     Key? key,
     required this.value,
@@ -21,14 +20,13 @@ class ReusableSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Switch(
+    return Switch(activeColor: Color.fromARGB(255, 12, 66, 172),
       value: value,
       onChanged: (newValue) {
         onChanged(newValue);
 
         switch (switchType) {
           case SwitchType.unit:
-          // Unit change logic
             final weatherCubit = context.read<WeatherCubit>();
             weatherCubit.updateUnit(newValue);
 
@@ -44,7 +42,6 @@ class ReusableSwitch extends StatelessWidget {
             weatherCubit.initializeWeatherData();
             break;
           case SwitchType.theme:
-          // Theme change logic
             final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
             themeProvider.changeSwitchState();
             break;
@@ -54,5 +51,4 @@ class ReusableSwitch extends StatelessWidget {
   }
 }
 
-// Enum for switch type
 enum SwitchType { unit, theme }

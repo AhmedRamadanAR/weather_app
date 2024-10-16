@@ -6,7 +6,7 @@ class DatabaseService implements LocalStorage{
   final _locationBox = Hive.box<LocationModel>('location_model');
   final showLocationScreenBox = Hive.box('location');
 final isCelsius=Hive.box("isCelsius");
-
+final isDarkMode=Hive.box("isDarkMode");
   @override
   void addLocation(LocationModel locationModel)async {
 
@@ -46,13 +46,24 @@ final isCelsius=Hive.box("isCelsius");
   }
 
   @override
-  bool getSwitch() {
+  bool getSwitchUnit() {
    return  isCelsius.get('isCelsius',defaultValue: true);
   }
 
   @override
-  void updateSwitch(bool value) async{
+  void updateSwitchUnit(bool value) async{
     await isCelsius.put('isCelsius', value);
+  }
+
+  @override
+  bool getSwitchTheme() {
+    return  isDarkMode.get('isDarkMode',defaultValue: false);
+
+  }
+
+  @override
+  void updateSwitchTheme(bool value) async{
+    await isDarkMode.put('isDarkMode', value);
   }
 
 }

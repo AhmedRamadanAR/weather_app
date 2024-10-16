@@ -4,7 +4,7 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: Colors.black,
   colorScheme: ColorScheme.dark(
     primary: Colors.black,
-    secondary: Colors.red, // Accent color
+    onPrimary: Colors.black,
     surface: Colors.black54,
     onSurface: Colors.white,
   ),

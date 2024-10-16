@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../Data/Model/five_days_weather.dart';
+import '../providers/unit_provider.dart';
 import 'WeatherDetails.dart';
 
 
@@ -43,6 +45,7 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
   final ScrollController _scrollController = ScrollController();
   String forecastText = 'Today\'s Forecast';
   final Map<int, GlobalKey> itemKeys = {};
+
 
   @override
   void initState() {
@@ -108,6 +111,9 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
 
   @override
   Widget build(BuildContext context) {
+    var unitProvider = Provider.of<UnitProvider>(context);
+
+    var isCelsius=unitProvider.isCelsius;
     DateTime localDateTime =
     DateTime.fromMillisecondsSinceEpoch(widget.date * 1000, isUtc: true)
         .toLocal();
@@ -226,7 +232,7 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
                       const Icon(Icons.cloud, size: 30),
                       const SizedBox(height: 5),
                       Text(
-                        '${data.main!.temp}°C',
+                        '${data.main?.temp}${isCelsius ? "°C" : "°F"} ',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 5),
