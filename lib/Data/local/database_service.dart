@@ -10,8 +10,14 @@ class DatabaseService implements LocalStorage {
   final sendAlert = Hive.box("sendAlert");
 
   @override
-  void addLocation(LocationModel locationModel) async {
-    await _locationBox.putAt(0,locationModel);
+  void addLocation(LocationModel locationModel) {
+    final box = Hive.box<LocationModel>('location_model');
+
+    if (box.isEmpty) {
+      box.add(locationModel);
+    } else {
+      box.putAt(0, locationModel);
+    }
   }
 
   @override
