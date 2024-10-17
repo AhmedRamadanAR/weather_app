@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
@@ -82,7 +81,7 @@ class WeatherApiService {
 
         return response;
       } catch (errorMessage) {
-        throw errorMessage;
+        rethrow;
       }
     }
 

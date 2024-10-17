@@ -96,23 +96,22 @@ class _onboarding_screenState extends State<onboarding_screen> {
   // Get started button
   Widget getStarted() {
     return Container(
+      margin: EdgeInsets.only(bottom: 20,left: 20,right: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: primaryColor,
       ),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
         style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 12, 66, 172)),
+          backgroundColor: WidgetStateProperty.all<Color>(const Color.fromARGB(255, 12, 66, 172)),
         ),
         onPressed: () async {
           final pres = await SharedPreferences.getInstance();
           pres.setBool("onboarding", false);
 
-          // Navigate to LocationScreen
           if (!mounted) return;
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LocationScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LocationScreen()));
         },
         child: const Text("Get started", style: TextStyle(color: Colors.white)),
       ),

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_pro/Presentation/providers/notifications_provider.dart';
 
 import '../../Data/const.dart';
 import '../cubit/current_weather_cubit.dart';
@@ -11,6 +11,7 @@ class ReusableSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
   final SwitchType switchType;
+
   const ReusableSwitch({
     Key? key,
     required this.value,
@@ -20,9 +21,10 @@ class ReusableSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Switch(activeColor: Color.fromARGB(255, 12, 66, 172),
+    return Switch(
+      activeColor: const Color.fromARGB(255, 12, 66, 172),
       value: value,
-      onChanged: (newValue) {
+      onChanged: (newValue) async {
         onChanged(newValue);
 
         switch (switchType) {
@@ -30,10 +32,12 @@ class ReusableSwitch extends StatelessWidget {
             final weatherCubit = context.read<WeatherCubit>();
             weatherCubit.updateUnit(newValue);
 
-            final currentLocation= weatherCubit.weatherRepo.getLocation();
+            final currentLocation = weatherCubit.weatherRepo.getLocation();
 
             final updatedLocation = currentLocation.copyWith(
-              unit: newValue ? WeatherUnit.metric.name : WeatherUnit.imperial.name,
+              unit: newValue
+                  ? WeatherUnit.metric.name
+                  : WeatherUnit.imperial.name,
               cityName: currentLocation.cityName,
             );
 
@@ -42,13 +46,58 @@ class ReusableSwitch extends StatelessWidget {
             weatherCubit.initializeWeatherData();
             break;
           case SwitchType.theme:
-            final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+            final themeProvider =
+                Provider.of<ThemeProvider>(context, listen: false);
             themeProvider.changeSwitchState();
+            break;
+          case SwitchType.alerts:
+            final notificationProvider =
+                Provider.of<NotificationsProvider>(context, listen: false);
+            notificationProvider.changeSwitchState();
+            if (newValue) {
+              if (await Permission.notification.isGranted) {
+                final weatherCubit = context.read<WeatherCubit>();
+                if (weatherCubit.weatherRepo.getAlert()) {
+                  weatherCubit
+                      .sendAlerts(weatherCubit.myCurrentWeather!.main!.temp!);
+                }
+              } else {
+                _requestNotificationPermissions(context).then((isGranted) {
+                  if (isGranted) {
+                    final weatherCubit = context.read<WeatherCubit>();
+                    if (weatherCubit.weatherRepo.getAlert()) {
+                      weatherCubit.sendAlerts(
+                          weatherCubit.myCurrentWeather!.main!.temp!);
+                    }
+                  } else {
+                    onChanged(false);
+                    notificationProvider.changeSwitchState();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Notification permission denied. Please enable it in settings.')),
+                    );
+                  }
+                });
+              }
+            }
             break;
         }
       },
     );
   }
-}
 
-enum SwitchType { unit, theme }
+  Future<bool> _requestNotificationPermissions(BuildContext context) async {
+    final status = await Permission.notification.request();
+    if (status.isGranted) {
+      print('Notification permission granted');
+      return true;
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      await openAppSettings();
+      print('Notification permission denied');
+      return false;
+    } else {
+      return false;
+    }
+  }
+}

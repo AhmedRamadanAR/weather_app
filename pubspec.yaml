@@ -8,10 +8,12 @@ environment:
 dependencies:
   provider:
   lottie: ^1.2.1
+  flutter_local_notifications: ^17.2.3
 
 
   dio: ^5.7.0
   intl: ^0.17.0
+
   flutter:
     sdk: flutter
   json_annotation: ^4.9.0
@@ -34,6 +36,10 @@ dependencies:
   # e.g., for HTTP requests or state management.
 
 dev_dependencies:
+
+
+  flutter_test:
+    sdk: flutter
   json_serializable: ^6.8.0
   build_runner: ^2.4.13
   hive_generator: ^2.0.1
@@ -48,8 +54,6 @@ flutter_icons:
 
 
 
-  flutter_test:
-    sdk: flutter
 
 # To use the material icons font, include this line
 flutter:

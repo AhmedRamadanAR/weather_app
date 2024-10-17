@@ -8,10 +8,14 @@ abstract  class LocalStorage{
 
   Future<void> setPreferredCity(String cityName);
   Future<String?> getPreferredCity();
+  Future<void> deletePreferedCity();
 
 void updateSwitchUnit(bool value);
   bool getSwitchUnit();
 
 void updateSwitchTheme(bool value);
 bool getSwitchTheme();
+
+void updateAlert(bool value);
+bool getAlert();
 }

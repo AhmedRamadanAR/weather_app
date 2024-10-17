@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_pro/Data/Model/location.dart';
@@ -10,7 +9,6 @@ import 'package:weather_pro/Data/local/database_service.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 import 'package:weather_pro/Presentation/screens/home_screen.dart';
 import 'package:weather_pro/Presentation/widgets/ReusableSwitch.dart';
-import 'package:weather_pro/Presentation/widgets/switch_widget.dart';
 import 'package:weather_pro/Services/ApiService.dart';
 
 import '../../Services/location_service.dart';
@@ -43,7 +41,7 @@ class _LocationScreenState extends State<LocationScreen> {
     // _getLocation(unitProvider);
   }
 
-  void _getLocation(UnitProvider unitProvider) async {
+  void getLocation(UnitProvider unitProvider) async {
 
 
     Position? position = await repo.determinePosition();
@@ -67,7 +65,6 @@ class _LocationScreenState extends State<LocationScreen> {
       ));
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('location', false);
-      // Update state after asynchronous work is complete
       setState(() {
         _isLoading = false; // Update loading state
         _cityName = getCityName; // Update city name
@@ -96,135 +93,138 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
 
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Image.asset('assets/images/location.png',width: 120,height: 180,),
-              ListTile(
-                leading: Text(
-                  unitProvider.isCelsius ? "Celsius °C " : "Fahrenheit °F",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-                ),
-                  trailing: ReusableSwitch(
-                value: unitProvider.isCelsius,
-                onChanged: (newValue) {
-                  unitProvider.changeSwitchState();
-                },
-                switchType: SwitchType.unit, // Specify switch type
-              ),
-              ),
-              ElevatedButton(
-                onPressed: _isButtonEnabled
-                    ? () {
-                  setState(() {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreen()));
-                  });
-                }
-                    : null,
-                child: Text("Next"),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+
+        child: Container(margin: EdgeInsets.symmetric(vertical: 70,horizontal: 20),
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Image.asset('assets/images/location.png',width: 50,height: 200,),
+                ListTile(
+                  leading: Text(
+                    unitProvider.isCelsius ? "Celsius °C " : "Fahrenheit °F",
+                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
+                    trailing: ReusableSwitch(
+                  value: unitProvider.isCelsius,
+                  onChanged: (newValue) {
+                    unitProvider.changeSwitchState();
+                  },
+                  switchType: SwitchType.unit, // Specify switch type
                 ),
-              ),
-              const Text(
-                'Your Current City',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    )
-                  : _cityName != null
-                      ? Column(
-                          children: [
-                            Card(
-                              elevation: 4,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.location_city,
-                                        color: Colors.blueAccent, size: 30),
-                                    const SizedBox(width: 10),
-                                    Text(
-                                      'City: $_cityName',
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                _getLocation(unitProvider);
-                              },
-                              icon:
-                                  const Icon(Icons.refresh, color: Colors.white),
-                              label: const Text("Refresh Location"),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 20),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ],
-                        )
-                      : const Center(
-                          child: Text(
-                            'City name not available.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16, color: Colors.red),
-                          ),
+                ElevatedButton(
+                  onPressed: _isButtonEnabled
+                      ? () {
+                    setState(() {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    });
+                  }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text("Next"),
+                ),
+                const Text(
+                  'Your Current City',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                onPressed: () {
-                  _getLocation(unitProvider);
-                },
-                icon: const Icon(Icons.gps_fixed, color: Colors.white),
-                label: const Text("Get Current City"),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                      )
+                    : _cityName != null
+                        ? Column(
+                            children: [
+                              Card(
+                                elevation: 4,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.location_city,
+                                          color: Colors.blueAccent, size: 30),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'City: $_cityName',
+                                        style: const TextStyle(overflow: TextOverflow.ellipsis,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),maxLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  getLocation(unitProvider);
+                                },
+                                icon:
+                                    const Icon(Icons.refresh, color: Colors.white),
+                                label: const Text("Refresh Location"),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 20),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const Center(
+                            child: Text(
+                              'City name not available.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16, color: Colors.red),
+                            ),
+                          ),
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    getLocation(unitProvider);
+                  },
+                  icon: const Icon(Icons.gps_fixed, color: Colors.white),
+                  label: const Text("Get Current City"),
+                  style: ElevatedButton.styleFrom(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Colors.white,
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

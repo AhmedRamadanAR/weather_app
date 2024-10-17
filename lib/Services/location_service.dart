@@ -1,7 +1,6 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'package:weather_pro/Data/local/local_storage.dart';
 
 class LocationService {
 

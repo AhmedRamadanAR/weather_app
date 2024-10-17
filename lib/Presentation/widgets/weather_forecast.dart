@@ -20,7 +20,6 @@ class WeatherHourlyForecast extends StatefulWidget {
   final String imageUrl;
   final String weatherDescription;
   final List<FiveDaysWeatherData> forecastData;
-
   const WeatherHourlyForecast({
     Key? key,
     required this.feelsLike,

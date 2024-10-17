@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
+import 'package:weather_pro/Presentation/providers/notifications_provider.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 
 import 'package:weather_pro/Presentation/screens/splash_screen.dart';
@@ -14,24 +15,23 @@ import 'Data/Repositories/WeatherRepository.dart';
 import 'Presentation/cubit/current_weather_cubit.dart';
 import 'Presentation/theme/theme_provider.dart';
 import 'Services/ApiService.dart';
+import 'Services/notifications_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // get path of the app
   var path = await getApplicationDocumentsDirectory();
-  // initialize hive with the app directory
   Hive.init(path.path);
+  final NotificationService notificationService = NotificationService();
   Hive.registerAdapter(LocationModelAdapter());
  await Hive.openBox("isCelsius");
   await Hive.openBox('location');
   await Hive.openBox("isDarkMode");
-
-  await Hive.openBox<LocationModel>('location_model');
-  final localStorage=DatabaseService();
+  await Hive.openBox("sendAlert");
+  await Hive.openBox<LocationModel>('location_model');final localStorage=DatabaseService();
 
   final locationService=LocationService();
   final apiService=WeatherApiService();
-final weatherRepo=WeatherRepository(locationService: locationService, localStorage: localStorage, apiService: apiService);
+final weatherRepo=WeatherRepository(notificationService:notificationService,locationService: locationService, localStorage: localStorage, apiService: apiService);
   runApp(
     MultiProvider(
       providers: [
@@ -40,12 +40,14 @@ final weatherRepo=WeatherRepository(locationService: locationService, localStora
           create: (context) => WeatherCubit(
             weatherRepo: weatherRepo),
             ),
-        ChangeNotifierProvider(create:(context)=>UnitProvider(weatherRepository: weatherRepo))
+        ChangeNotifierProvider(create:(context)=>UnitProvider(weatherRepository: weatherRepo)),
+        ChangeNotifierProvider(create: (context)=>NotificationsProvider(weatherRepository: weatherRepo)),
+
 
         //BlocProvider(create: (context)=>LocationCubit(weatherRepo: weatherRepo))
 
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: Provider.of<ThemeProvider>(context).currentTheme,
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

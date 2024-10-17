@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
       );
     } else if (isLocationSet) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LocationScreen()),
+        MaterialPageRoute(builder: (context) => const LocationScreen()),
       );
     } else {
       Navigator.of(context).pushReplacement(
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Initialize AnimationController and Animation here
     _controller = AnimationController(
-      duration: const Duration(seconds:2),
+      duration: const Duration(seconds:5),
       vsync: this,
     )..forward();
 
@@ -68,7 +68,8 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple, // Background color
+      backgroundColor:                     const Color.fromARGB(255, 12, 66, 172)
+      , // Background color
       body: FadeTransition(
         opacity: _animation, // Apply the fade-in animation
         child: Center(

@@ -5,7 +5,7 @@ class WeatherDetails extends StatelessWidget {
   final String precipitation;
   final String windSpeed;
 
-  WeatherDetails({
+  const WeatherDetails({super.key, 
     required this.humidity,
     required this.precipitation,
     required this.windSpeed,
@@ -14,8 +14,8 @@ class WeatherDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      padding: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
@@ -23,7 +23,7 @@ class WeatherDetails extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -44,12 +44,12 @@ class WeatherDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 24.0, color: Theme.of(context).iconTheme.color),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
           value,
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
