@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_pro/Data/const.dart';
 import 'package:weather_pro/Presentation/widgets/searchbar_widget.dart';
+
 import '../cubit/current_weather_cubit.dart';
 import '../cubit/current_weather_state.dart';
 import '../providers/unit_provider.dart';
 import '../widgets/DrawerWidget.dart';
 import '../widgets/chart.dart';
-import '../widgets/next_forecast.dart';
 import '../widgets/weather_forecast.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  TextEditingController textEditingController = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,31 +89,7 @@ class HomeScreen extends StatelessWidget {
                         forecastData: state.fiveDaysWeather!.list!,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: NextForecast(
-                        forecastData: [
-                          {
-                            "day": "Monday",
-                            "icon": "cloud",
-                            "high": "13",
-                            "low": "10"
-                          },
-                          {
-                            "day": "Tuesday",
-                            "icon": "cloud",
-                            "high": "17",
-                            "low": "12"
-                          },
-                          {
-                            "day": "Wednesday",
-                            "icon": "sunny",
-                            "high": "20",
-                            "low": "14"
-                          },
-                        ],
-                      ),
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child:

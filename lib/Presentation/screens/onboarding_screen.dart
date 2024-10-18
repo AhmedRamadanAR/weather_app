@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:weather_pro/Components/color.dart';
 import 'package:weather_pro/Data/Model/onboarding_items.dart';
 import 'package:weather_pro/Presentation/screens/location_screen.dart';
 
-class onboarding_screen extends StatefulWidget {
-  const onboarding_screen({super.key});
+class OnBoradingScreen extends StatefulWidget {
+  const OnBoradingScreen({super.key});
 
   @override
-  State<onboarding_screen> createState() => _onboarding_screenState();
+  State<OnBoradingScreen> createState() => _OnBoradingScreenState();
 }
 
-class _onboarding_screenState extends State<onboarding_screen> {
+class _OnBoradingScreenState extends State<OnBoradingScreen> {
   final controller = OnboardingItems();
   final pageController = PageController();
 
@@ -96,7 +95,7 @@ class _onboarding_screenState extends State<onboarding_screen> {
   // Get started button
   Widget getStarted() {
     return Container(
-      margin: EdgeInsets.only(bottom: 20,left: 20,right: 20),
+      margin: const EdgeInsets.only(bottom: 20,left: 20,right: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
       ),

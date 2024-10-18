@@ -94,7 +94,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
       body: SingleChildScrollView(
 
-        child: Container(margin: EdgeInsets.symmetric(vertical: 70,horizontal: 20),
+        child: Container(margin: const EdgeInsets.symmetric(vertical: 70,horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.all(30.0),
 

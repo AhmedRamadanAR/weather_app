@@ -23,6 +23,7 @@ class SearchBarWidget extends StatelessWidget {
           if (cityName.isNotEmpty || cityName.length != 0) {
             onSearchClicked();
             FocusScope.of(context).unfocus();
+
           } else{
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

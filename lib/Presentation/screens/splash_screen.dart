@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (isFirstTime) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const onboarding_screen()),
+        MaterialPageRoute(builder: (context) => const OnBoradingScreen()),
       );
     } else if (isLocationSet) {
       Navigator.of(context).pushReplacement(
