@@ -21,7 +21,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  // var unit = Hive.box<LocationModel>('location_model');
 
   var repo = WeatherRepository(
       localStorage: DatabaseService(),
@@ -33,13 +32,6 @@ class _LocationScreenState extends State<LocationScreen> {
   bool _isLoading = false;
   bool _isButtonEnabled = false;
   final LocationService _locationService = LocationService();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // var unitProvider = Provider.of<UnitProvider>(context);
-    // _getLocation(unitProvider);
-  }
 
   void getLocation(UnitProvider unitProvider) async {
 

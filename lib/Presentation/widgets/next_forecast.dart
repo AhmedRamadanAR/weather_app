@@ -50,7 +50,7 @@ class NextForecast extends StatelessWidget {
           Row(
             children: [
               Icon(
-                Icons.cloud, // You can use different icons based on the weather condition
+                Icons.cloud,
                 size: 24.0,
                 color: Theme.of(context).iconTheme.color,
               ),

@@ -1,5 +1,4 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
@@ -30,7 +29,6 @@ class WeatherRepository {
 
   Future<void> getCityName(
       double latitude, double longitude, UnitProvider unit) async {
-    // Use await to wait for getCityName to complete
     final cityName = await locationService.getCityName(latitude, longitude);
 
     addLocation(LocationModel(

@@ -62,7 +62,6 @@ class _DrawerState extends State<DrawerWidget> {
                   trailing: ReusableSwitch(
                     value: themeProvider.isDarkMode,
                     onChanged: (newValue) {
-                      // No need to call changeSwitchState here, it's handled in ReusableSwitch
                     },
                     switchType: SwitchType.theme, // Specify switch type
                   ),
@@ -79,7 +78,6 @@ class _DrawerState extends State<DrawerWidget> {
                   trailing: ReusableSwitch(
                     value: notificationsProvider.sendAlert,
                     onChanged: (newValue) {
-                      // No need to call changeSwitchState here, it's handled in ReusableSwitch
                     },
                     switchType: SwitchType.alerts, // Specify switch type
                   ),

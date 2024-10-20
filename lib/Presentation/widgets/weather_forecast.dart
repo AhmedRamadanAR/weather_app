@@ -210,7 +210,7 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
                 DateFormat('EEEE,\n hh:mm a').format(localDateTime);
 
                 return Container(
-                  key: itemKeys[index], // Assign the GlobalKey to each item.
+                  key: itemKeys[index],
                   margin: const EdgeInsets.symmetric(
                       horizontal: 10.0, vertical: 8.0),
                   padding: const EdgeInsets.all(12.0),
@@ -228,13 +228,12 @@ class _WeatherHourlyForecastState extends State<WeatherHourlyForecast> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded( // Wrap the Column with Expanded
+                      Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Image.network(
                               "https://openweathermap.org/img/wn/${data.weather?[0].icon}.png",
-                              // You might want to adjust the image size here if it's too large
                             ),
                             const SizedBox(height: 5),
                             Text(

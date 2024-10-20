@@ -106,7 +106,6 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
   Future<void> getCityNameFromLatLon(
       double latitude, double longitude, UnitProvider unitProvider) async {
-    // Call getCityName from the repository and await its completion
     await weatherRepo.getCityName(latitude, longitude, unitProvider);
     weatherRepo.deletePreferredCity();
 
