@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 
-import '../../Data/const.dart';
+import '../../Data/local/const.dart';
 import '../cubit/current_weather_cubit.dart';
 
 class SearchBarWidget extends StatelessWidget {

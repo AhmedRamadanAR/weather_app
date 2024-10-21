@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 import 'package:weather_pro/Presentation/theme/theme_provider.dart';
 
-import '../../Data/const.dart';
+import '../../Data/local/const.dart';
 import '../providers/notifications_provider.dart';
 import 'ReusableSwitch.dart';
 

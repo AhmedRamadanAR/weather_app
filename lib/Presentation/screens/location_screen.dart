@@ -4,14 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/Repositories/WeatherRepository.dart';
-import 'package:weather_pro/Data/const.dart';
+import 'package:weather_pro/Data/local/const.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 import 'package:weather_pro/Presentation/screens/home_screen.dart';
 import 'package:weather_pro/Presentation/widgets/ReusableSwitch.dart';
-import 'package:weather_pro/Services/ApiService.dart';
 
-import '../../Services/location_service.dart';
+import '../../Data/Services/ApiService.dart';
+import '../../Data/Services/location_service.dart';
+
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,19 @@ import 'package:weather_pro/Presentation/providers/notifications_provider.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
 
 import 'package:weather_pro/Presentation/screens/splash_screen.dart';
-import 'package:weather_pro/Services/location_service.dart';
 
 import 'Data/Repositories/WeatherRepository.dart';
+import 'Data/Services/ApiService.dart';
+import 'Data/Services/location_service.dart';
+import 'Data/Services/notifications_service.dart';
 import 'Presentation/cubit/current_weather_cubit.dart';
 import 'Presentation/theme/theme_provider.dart';
-import 'Services/ApiService.dart';
-import 'Services/notifications_service.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
+
   var path = await getApplicationDocumentsDirectory();
   Hive.init(path.path);
   final NotificationService notificationService = NotificationService();
@@ -27,8 +31,9 @@ void main() async {
   await Hive.openBox('location');
   await Hive.openBox("isDarkMode");
   await Hive.openBox("sendAlert");
-  await Hive.openBox<LocationModel>('location_model');final localStorage=DatabaseService();
+  await Hive.openBox<LocationModel>('location_model');
 
+  final localStorage=DatabaseService();
   final locationService=LocationService();
   final apiService=WeatherApiService();
 final weatherRepo=WeatherRepository(notificationService:notificationService,locationService: locationService, localStorage: localStorage, apiService: apiService);
@@ -44,7 +49,6 @@ final weatherRepo=WeatherRepository(notificationService:notificationService,loca
         ChangeNotifierProvider(create: (context)=>NotificationsProvider(weatherRepository: weatherRepo)),
 
 
-        //BlocProvider(create: (context)=>LocationCubit(weatherRepo: weatherRepo))
 
       ],
       child: const MyApp(),

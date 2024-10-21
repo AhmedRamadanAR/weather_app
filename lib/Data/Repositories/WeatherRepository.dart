@@ -2,13 +2,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:weather_pro/Data/Model/location.dart';
 import 'package:weather_pro/Data/local/database_service.dart';
 import 'package:weather_pro/Presentation/providers/unit_provider.dart';
-import 'package:weather_pro/Services/ApiService.dart';
-import 'package:weather_pro/Services/location_service.dart';
 
-import '../../Services/notifications_service.dart';
 import '../Model/current_weather.dart';
 import '../Model/five_days_weather.dart';
-import '../const.dart';
+import '../Services/ApiService.dart';
+import '../Services/location_service.dart';
+import '../Services/notifications_service.dart';
+import '../local/const.dart';
 
 class WeatherRepository {
   WeatherRepository(

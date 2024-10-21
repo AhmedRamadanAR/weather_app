@@ -5,7 +5,7 @@ import '../../Data/Model/current_weather.dart';
 import '../../Data/Model/five_days_weather.dart';
 import '../../Data/Model/location.dart';
 import '../../Data/Repositories/WeatherRepository.dart';
-import '../../Data/const.dart';
+import '../../Data/local/const.dart';
 import 'current_weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
